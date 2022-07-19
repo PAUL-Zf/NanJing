@@ -1,7 +1,13 @@
 <template>
   <div id="info" height="100%">
-    <div id="map" height="100%">
+    <div id="map">
       <svg id="myMap"></svg>
+    </div>
+    <div id="profile">
+      <div id="name">
+        <svg id="nameTitle"></svg>
+      </div>
+      <div id="events"></div>
     </div>
   </div>
 </template>
@@ -30,17 +36,17 @@ export default {
       .geoMercator()
       .center([108, 31]) // GPS of location to zoom on
       .scale(500) // This is like the zoom
-      .translate([340, 500]);
+      .translate([340, 470]);
 
-    // add circle border
-    svg
-      .append("circle")
-      .attr("r", 320)
-      .attr("cx", 330)
-      .attr("cy", 955 / 2)
-      .attr("fill", "white")
-      .attr("stroke", "#A2A2A2")
-      .attr("stroke-width", 2);
+    // // add circle border
+    // svg
+    //   .append("circle")
+    //   .attr("r", 320)
+    //   .attr("cx", 330)
+    //   .attr("cy", 955 / 2)
+    //   .attr("fill", "white")
+    //   .attr("stroke", "#A2A2A2")
+    //   .attr("stroke-width", 2);
 
     // Load external data and boot
     d3.json("wholeMap.json").then(function (data) {
@@ -120,8 +126,8 @@ export default {
             .on("mouseover", function (d) {
               d3.select("#event" + i).attr("r", 6);
               return tooltip2
-                .style("top", d.pageY - 80 + "px")
-                .style("left", d.pageX + 15 + "px")
+                .style("top", d.pageY + "px")
+                .style("left", d.pageX + "px")
                 .style("opacity", 1)
                 .html("<p>" + locationName + "</p>");
             })
@@ -151,6 +157,37 @@ export default {
               .style("stroke-width", 2.5);
           }
         }
+        // Add name title
+        let nameSvg = d3.select("#nameTitle");
+        nameSvg
+          .append("text")
+          .attr("x", 255)
+          .attr("y", 350)
+          .text(this.name)
+          .style("font-family", "楷体")
+          .style("font-size", "60px")
+          .style("letter-spacing", "13px")
+          .style("font-weight", "bold")
+          .style("fill", "#6D776E")
+          .style("text-anchor", "end")
+          .style("writing-mode", "vertical-lr");
+
+        // Add time text
+        console.log(this.info[0]);
+        let startTime = this.info[0]["content"];
+        let endTime = this.info[-1]["time"];
+        nameSvg
+          .append("text")
+          .attr("x", 100)
+          .attr("y", 300)
+          .text(startTime)
+          .style("font-family", "楷体")
+          .style("font-size", "120px")
+          .style("letter-spacing", "150px")
+          .style("font-weight", "bold")
+          .style("fill", "#6D776E")
+          // .style("text-anchor", "middle")
+          .style("writing-mode", "vertical-lr");
       });
     },
   },
@@ -160,20 +197,50 @@ export default {
 
 <style scoped>
 #info {
+  position: relative;
   width: 100%;
-  height: 100%;
+  height: 98%;
 }
 
 #map {
   position: relative;
-  left: 10%;
+  float: left;
+  left: 22%;
   width: 35%;
   height: 100%;
 }
 
 #myMap {
+  position: relative;
   width: 100%;
   height: 100%;
+}
+
+#profile {
+  position: relative;
+  float: left;
+  left: 25%;
+  width: 40%;
+  height: 100%;
+}
+
+#name {
+  position: relative;
+  float: left;
+  width: 100%;
+  height: 50%;
+}
+
+#nameTitle {
+  width: 100%;
+  height: 100%;
+}
+
+#events {
+  position: relative;
+  float: left;
+  width: 100%;
+  height: 50%;
 }
 
 .tooltip {
@@ -191,7 +258,7 @@ export default {
 }
 
 #info {
-  background: url(../assets/background-00.png) center center no-repeat;
-  background-size: 100% 100%;
+  background: url(../assets/background_2.png) center center no-repeat;
+  background-size: 100% 105%;
 }
 </style>
