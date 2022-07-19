@@ -1,0 +1,34 @@
+{
+  "type": "FeatureCollection",
+  "name": "100000_full",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "adcode": "420000",
+        "name": "湖北省",
+        "center": [114.298572, 30.584355],
+        "centroid": [112.271286, 30.987521],
+        "childrenNum": 17,
+        "level": "province",
+        "parent": { "adcode": 100000 },
+        "subFeatureIndex": 16,
+        "acroutes": [100000]
+      },
+      "geometry": {
+        "type": "MultiPolygon",
+        "coordinates": [
+          [
+            [
+              [112.716747, 32.357612],
+              [112.735841, 32.356095],
+              [112.733993, 32.356601],
+              [112.724138, 32.358623],
+              [112.716747, 32.357612]
+            ]
+          ]
+        ]
+      }
+    }
+  ]
+}
