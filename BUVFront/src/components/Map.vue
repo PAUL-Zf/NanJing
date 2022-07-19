@@ -1,5 +1,6 @@
 <template>
   <div id="info" height="100%">
+    <div id="button" @click="goback"></div>
     <div id="map">
       <svg id="myMap"></svg>
     </div>
@@ -90,6 +91,9 @@ export default {
     });
   },
   methods: {
+    goback() {
+      this.$router.push("/");
+    },
     fetchData(projection, svg) {
       dataService.queryByName({ name: this.name }, (response) => {
         this.info = response;
@@ -276,6 +280,16 @@ export default {
   position: relative;
   width: 100%;
   height: 98%;
+}
+
+#button {
+  position: absolute;
+  top: 87%;
+  left: 10%;
+  width: 80px;
+  height: 80px;
+  background: url(../assets/back.png) center center no-repeat;
+  background-size: 100% 105%;
 }
 
 #map {
