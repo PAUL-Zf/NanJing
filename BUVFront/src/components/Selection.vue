@@ -31,7 +31,7 @@ export default {
       // https://d3-graph-gallery.com/graph/interactivity_brush.html#brushingforzoom
       var margin = { top: 30, right: 30, bottom: 30, left: 30 },
         width = 1600 - margin.left - margin.right,
-        height = 890 - margin.top - margin.bottom;
+        height = 900 - margin.top - margin.bottom;
       var c = {
         1: "#7c9d7f",
         2: "#3d3d3d",
