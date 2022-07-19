@@ -390,7 +390,10 @@ export default {
               })
               .on("click", (event, v) => {
                 console.log(v.data.name);
-                this.$router.push("/about");
+                this.$router.push({
+                  name: "about",
+                  params: { name: v.data.name },
+                });
               })
               .transition()
               .duration(500)
@@ -664,7 +667,10 @@ export default {
                   .style("font-size", "10px");
               })
               .on("click", (event, v) => {
-                this.$router.push("/about");
+                this.$router.push({
+                  name: "about",
+                  params: { name: v.data.name },
+                });
               })
               .transition()
               .duration(500)

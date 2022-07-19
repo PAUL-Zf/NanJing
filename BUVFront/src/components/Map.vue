@@ -14,12 +14,14 @@ export default {
   name: "Map",
   data() {
     return {
-      name: "陈修良",
+      name: null,
       locationName: null,
       info: null,
     };
   },
   mounted() {
+    this.name = this.$route.params.name;
+    console.log(this.name);
     // The svg
     var svg = d3.select("svg");
 
@@ -28,13 +30,13 @@ export default {
       .geoMercator()
       .center([108, 31]) // GPS of location to zoom on
       .scale(500) // This is like the zoom
-      .translate([510, 500]);
+      .translate([340, 500]);
 
     // add circle border
     svg
       .append("circle")
       .attr("r", 320)
-      .attr("cx", 500)
+      .attr("cx", 330)
       .attr("cy", 955 / 2)
       .attr("fill", "white")
       .attr("stroke", "#A2A2A2")
@@ -163,7 +165,9 @@ export default {
 }
 
 #map {
-  width: 50%;
+  position: relative;
+  left: 10%;
+  width: 35%;
   height: 100%;
 }
 
@@ -184,5 +188,10 @@ export default {
   border-width: 1px;
   background-color: red;
   border-radius: 5px;
+}
+
+#info {
+  background: url(../assets/background-00.png) center center no-repeat;
+  background-size: 100% 100%;
 }
 </style>
