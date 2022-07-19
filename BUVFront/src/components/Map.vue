@@ -109,7 +109,7 @@ export default {
           .style("opacity", 0)
           .style("font-size", "30px")
           .style("text-align", "left")
-          .style("font-family", "Times New Roman, 秋鸿楷, 楷体");
+          .style("font-family", "秋鸿楷, 楷体");
 
         let tooltip2 = d3
           .select("#map")
@@ -134,6 +134,7 @@ export default {
           ];
           let locationName = event["name"];
           let ex = event["content"];
+          let exTime = event["time"];
 
           let proLocation = projection(location);
           svg
@@ -160,7 +161,7 @@ export default {
             })
             .on("click", function () {
               d3.select("#event")
-                .html("<p>" + ex + "</p>")
+                .html("<p>" + i + "." + exTime + "年 " + ex + "</p>")
                 .style("opacity", 1.0);
             });
 
