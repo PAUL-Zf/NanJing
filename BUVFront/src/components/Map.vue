@@ -9,9 +9,7 @@
         <svg id="nameTitle"></svg>
       </div>
       <div id="events">
-        <div id="border">
-          <div id="event"></div>
-        </div>
+        <div id="border"></div>
       </div>
     </div>
   </div>
@@ -98,6 +96,21 @@ export default {
       dataService.queryByName({ name: this.name }, (response) => {
         this.info = response;
 
+        let eventText = d3
+          .select("#border")
+          .append("div")
+          .attr("id", "event")
+          .style("position", "absolute")
+          .style("background-color", "#D3D9D8")
+          .style("border", "solid")
+          .style("border-width", "1px")
+          .style("border-radius", "5px")
+          .style("padding", "10px")
+          .style("opacity", 0)
+          .style("font-size", "30px")
+          .style("text-align", "left")
+          .style("font-family", "Times New Roman, 秋鸿楷, 楷体");
+
         let tooltip2 = d3
           .select("#map")
           .append("div")
@@ -108,6 +121,7 @@ export default {
           .style("border", "solid")
           .style("border-width", "1px")
           .style("border-radius", "5px")
+          .style("font-size", "20px")
           .style("padding", "10px");
 
         // locate point on the map
@@ -136,7 +150,7 @@ export default {
               d3.select("#event" + i).attr("r", 6);
               return tooltip2
                 .style("top", d.pageY + "px")
-                .style("left", d.pageX + "px")
+                .style("left", d.pageX - 400 + "px")
                 .style("opacity", 1)
                 .html("<p>" + locationName + "</p>");
             })
@@ -146,8 +160,8 @@ export default {
             })
             .on("click", function () {
               d3.select("#event")
-                .html('<p id="text">' + ex + "</p>")
-                .style("font-size", "14px");
+                .html("<p>" + ex + "</p>")
+                .style("opacity", 1.0);
             });
 
           if (i < this.info.length - 1) {
@@ -213,12 +227,12 @@ export default {
           .style("font-weight", "bold")
           .style("fill", "white");
 
-        // Add events text
-        const eventsSvg = d3
-          .select("#event")
-          .append("svg")
-          .attr("width", 300 * this.info.length)
-          .attr("height", 363);
+        // // Add events text
+        // const eventsSvg = d3
+        //   .select("#event")
+        //   .append("svg")
+        //   .attr("width", 300 * this.info.length)
+        //   .attr("height", 363);
 
         // for (let i = 0; i < this.info.length; i++) {
         //   let ex = this.info[i]["content"];
@@ -349,17 +363,15 @@ export default {
   float: left;
   width: 100%;
   height: 98%;
-  overflow-x: auto;
-  overflow: hidden;
   font-family: "Times New Roman, 秋鸿楷, 楷体";
-  font-size: "14px";
+  font-size: "20px";
 }
 
 #text {
   font-size: 20px;
 }
 
-.tooltip {
+/* .tooltip {
   position: absolute;
   width: 80;
   height: auto;
@@ -371,7 +383,7 @@ export default {
   border-width: 1px;
   background-color: red;
   border-radius: 5px;
-}
+} */
 
 #info {
   background: url(../assets/background_2.png) center center no-repeat;
