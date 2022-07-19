@@ -32,7 +32,7 @@ export default {
       var margin = { top: 30, right: 30, bottom: 30, left: 30 },
         width = 1600 - margin.left - margin.right,
         height = 900 - margin.top - margin.bottom;
-      var centralPoint = [width / 2 + 200, height / 2]
+      var centralPoint = [width / 2 + 200, height / 2];
       var c = {
         1: "#7c9d7f",
         2: "#3d3d3d",
@@ -130,7 +130,10 @@ export default {
       var barsGroup = svg
         .append("g")
         .attr("id", "barsGroup")
-        .attr("transform", "translate(" + centralPoint[0] + "," + height / 2 + ")");
+        .attr(
+          "transform",
+          "translate(" + centralPoint[0] + "," + height / 2 + ")"
+        );
 
       var pie = d3
         .pie()
@@ -327,9 +330,9 @@ export default {
                   .attr("width", recSize[0])
                   .attr("height", recSize[1])
                   // .attr("fill", "#E8DBB7")
-                  .attr("fill","#CED7D2")
+                  .attr("fill", "#CED7D2")
                   .attr("opacity", 0.8)
-                  .lower()//相反 raise()
+                  .lower(); //相反 raise()
 
                 profile
                   .append("image") //https://blog.csdn.net/weixin_44331765/article/details/112391810
@@ -416,7 +419,10 @@ export default {
       var infoGroup = svg
         .append("g")
         .attr("id", "info")
-        .attr("transform", "translate(" + centralPoint[0] + "," + height / 2 + ")");
+        .attr(
+          "transform",
+          "translate(" + centralPoint[0] + "," + height / 2 + ")"
+        );
 
       infoGroup
         .selectAll("g")
@@ -722,6 +728,7 @@ export default {
 
         //TIME SELECTOR
         var peoNumOfYear = this.getPeoNumOfYear(d) //data
+        console.log(peoNumOfYear)
         var h = 70, w = 1530
 
         var timeselector = svg
