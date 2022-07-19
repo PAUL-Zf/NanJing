@@ -354,7 +354,7 @@ export default {
                   .style("font-size", "13px");
               })
               .on("click", (event, v) => {
-                console.log(v.data.name);
+                // console.log(v.data.name);
                 this.$router.push({
                   name: "about",
                   params: { name: v.data.name },
@@ -449,7 +449,7 @@ export default {
             .attr("y", 0)
             .text((datum) => datum.name)
             .style("font-size", "13px")
-            .style("font-family", "秋鸿楷, 秋鸿楷, 楷体")
+            .style("font-family", "秋鸿楷, 楷体")
             .style("font-weight", "normal")
             .style("dominant-baseline", "middle")
             // Rotation to improve readability
@@ -576,7 +576,7 @@ export default {
                   .append("g");
 
                 var r = [300, 150];
-                var detailspos = [width / 2 + r[0], height / 2 + r[1]];
+                var detailspos = [width / 2 - r[0], height / 2 + r[1]];
 
                 profile
                   .append("text")
@@ -646,9 +646,10 @@ export default {
                   )
                   .attr("width", recSize[0])
                   .attr("height", recSize[1])
-                  .attr("fill", "#E8DBB7")
+                  // .attr("fill", "#E8DBB7")
+                  .attr("fill","#CED7D2")
                   .attr("opacity", 0.8)
-                  .lower()
+                  .lower()//相反 raise()
 
                 profile
                   .append("image") //https://blog.csdn.net/weixin_44331765/article/details/112391810
@@ -695,7 +696,7 @@ export default {
 
       legend.each(function (d) {
         const el = d3.select(this);
-        console.log(d.type);
+        // console.log(d.type);
         // .attr("transform", "translate(" + legendPos[0] + interval * i + "," + legendPos[1] + ")")
         el.append("image")
           .attr("id", "imgLegend-" + d.figure_type_id)
@@ -717,28 +718,75 @@ export default {
           .style("font-size", "18px")
           .style("writing-mode", "vertical-lr");
 
-        // //TIME SELECTOR
-        // var timeselectorPos = [1500, 50];
-        // var timescale = [1830, 2030];
-        // var timeselector = svg
-        //   .append("g")
-        //   .attr("id", "timeselector")
-        //   .attr(
-        //     "transform",
-        //     "translate(" + timeselectorPos[0] + "," + timeselectorPos[1] + ")"
-        //   );
-        // // Add X axis
-        // var timescaler = d3
-        //   .scaleLinear()
-        //   .domain(timescale)
-        //   .range([0, height - 100]);
-        // svg
-        //   .append("g")
-        //   .attr(
-        //     "transform",
-        //     "translate(" + timeselectorPos[0] + "," + timeselectorPos[1] + ")"
-        //   )
-        //   .call(d3.axisRight(timescaler));
+      });
+
+        //TIME SELECTOR
+        var peoNumOfYear = this.getPeoNumOfYear(d) //data
+        var h = 70, w = 1530
+
+        var timeselector = svg
+            .append("g")
+            .attr("id", "timeselector")
+
+        var timeselectorPos = [w,h]
+        var timescale = [1830,2030]
+        var timescaler = d3.scaleLinear()
+            .domain(timescale)
+            .range([ 0, height - 100 ]);
+        timeselector.append("g")
+            .attr("id","timescaler")
+            .attr("transform", "translate(" + timeselectorPos[0] + "," + timeselectorPos[1] + ")")
+            .call(d3.axisRight(timescaler).ticks(5));
+
+        var numscalePos = [w-100, h]
+        var numscaler = d3.scaleLinear()
+            .domain([0,200])
+            .range([100,0])
+            
+        timeselector.append("g")
+            .attr("id","numscaler")
+            .attr("transform", "translate(" + numscalePos[0] + "," + numscalePos[1] + ")")
+            .call(d3.axisTop(numscaler).ticks(1));
+
+
+        // Plot the area
+        timeselector.append("path")
+            .attr("class", "mypath")
+            .datum(peoNumOfYear)
+            .attr("fill", "#8CA287")
+            // .attr("fill", function (d, i) {
+            //       return d3.interpolateRgb("#8CA287", "white" )(normalize(d.num));})
+            .attr("opacity", 0.5)
+            // .attr("stroke", "#000")
+            .attr("stroke","#FCD551")
+            .attr("stroke-width", 1)
+            .attr("stroke-linejoin", "round")
+            .attr("transform", "translate(" + numscalePos[0] + "," + numscalePos[1] + ")")
+            .attr("d", d3
+                        .area()
+                        .y(function(d) { return timescaler(d.year) })
+                        .x0(numscaler(0))
+                        .x1(function(d) { return numscaler(d.num) })
+                        .curve(d3.curveCardinal.tension(1))
+            )
+
+        timeselector.append("text")
+          .text("时间")
+          .attr("x", timeselectorPos[0] + 20)
+          .attr("y", timeselectorPos[1])
+          .style("text-anchor", "start")
+          .style("font-family", "秋鸿楷, 楷体")
+          .style("font-size", "18px")
+          .style("writing-mode", "vertical-lr");
+
+        timeselector.append("text")
+          .text("数量")
+          .attr("x", timeselectorPos[0] - 10)
+          .attr("y", timeselectorPos[1] - 15)
+          .style("text-anchor", "end")
+          .style("font-family", "秋鸿楷, 楷体")
+          .style("font-size", "18px")
+          
 
         //TIPS
         var tipPos = [1350, height];
@@ -747,13 +795,12 @@ export default {
           .attr("id", "tips")
           .attr("transform", "translate(" + tipPos[0] + "," + tipPos[1] + ")")
           .append("text")
-          .text("注：1.何民魂出生年份不详，以其主要经历起始年份暂代。")
+          .text("注：何民魂出生年份不详，以其主要经历起始年份暂代。")
           .style("font-family", "秋鸿楷, 楷体")
           .style("font-size", "12px")
           .style("fill", "#6D776E")
           .style("opacity", 0.8)
           .style("text-anchor", "middle");
-      });
     },
     calcTranslate(data, move = 4) {
       // showChart4()
@@ -779,6 +826,25 @@ export default {
         }
       });
       return dataOfType;
+    },
+    getPeoNumOfYear(data) {
+            var numOfYear = []
+            // console.log(data[0].birth_time)
+            for(var i=1837; i<=2022; i++){
+                // numOfYear[String(i)] = 0
+                var noy = {}
+                noy["year"] = i
+                noy["num"] = 0
+                data.forEach(d => {
+                    if(d.birth_time == null) d.birth_time = d.experience_start
+                    if(d.birth_time <= i && d.death_time > i){
+                        noy["num"] += 1
+                    }
+                })
+                numOfYear.push(noy)
+            }
+            // console.log(numOfYear)
+            return numOfYear
     },
   },
   watch: {},
