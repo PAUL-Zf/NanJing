@@ -32,6 +32,7 @@ export default {
       var margin = { top: 30, right: 30, bottom: 30, left: 30 },
         width = 1600 - margin.left - margin.right,
         height = 900 - margin.top - margin.bottom;
+      var centralPoint = [width / 2 + 200, height / 2]
       var c = {
         1: "#7c9d7f",
         2: "#3d3d3d",
@@ -51,7 +52,7 @@ export default {
         { figure_type_id: 7, num: 70, type: "文史哲名家" },
       ]; //固定的顺序
       var innerRadius = 80;
-      var outerRadius = 400;
+      var outerRadius = 380;
       var imgWidth = 250;
       var myDomain = [1840, 2030];
       var d = this.allData.people;
@@ -81,36 +82,36 @@ export default {
         .attr("id", "main")
         .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-      //TITLE
-      var titleImgPos = [-150, 0];
-      var titleContentPos = [158, 305];
-      svg
-        .append("g")
-        .attr("id", "title")
-        .append("image") //https://blog.csdn.net/weixin_44331765/article/details/112391810
-        .attr("id", "imgTitle")
-        .attr("href", "title.png") //图片放在public下就可以 https://blog.csdn.net/qq_30306717/article/details/121129193
-        .attr(
-          "transform",
-          "translate(" + titleImgPos[0] + "," + titleImgPos[1] + ")"
-        );
+      // //TITLE
+      // // var titleImgPos = [-150, 0];
+      // var titleContentPos = [30, 50];
+      // svg
+      //   .append("g")
+      //   .attr("id", "title")
+      //   // .append("image") //https://blog.csdn.net/weixin_44331765/article/details/112391810
+      //   // .attr("id", "imgTitle")
+      //   // .attr("href", "title.png") //图片放在public下就可以 https://blog.csdn.net/qq_30306717/article/details/121129193
+      //   // .attr(
+      //   //   "transform",
+      //   //   "translate(" + titleImgPos[0] + "," + titleImgPos[1] + ")"
+      //   // );
 
-      d3.select("#title")
-        .append("text")
-        .attr("id", "titleContent")
-        .attr("x", titleContentPos[0])
-        .attr("y", titleContentPos[1])
-        .text("南京百年人物")
-        .style("font-family", "楷体")
-        .style("font-size", "40px")
-        .style("letter-spacing", "10px")
-        .style("font-weight", "bold")
-        .style("fill", "#6D776E")
-        .style("text-anchor", "middle")
-        .style("writing-mode", "vertical-lr");
+      // // d3.select("#title")
+      //   .append("text")
+      //   .attr("id", "titleContent")
+      //   .attr("x", titleContentPos[0])
+      //   .attr("y", titleContentPos[1])
+      //   .text("遇见南京·数百年风流人物")
+      //   .style("font-family", "秋鸿楷, 楷体")
+      //   .style("font-size", "50px")
+      //   // .style("letter-spacing", "1px")
+      //   .style("font-weight", "bold")
+      //   .style("fill", "#6D776E")
+      //   // .style("text-anchor", "middle")
+      //   .style("writing-mode", "vertical-lr");
 
       //CENTRAL IMAGE
-      var img_x = width / 2 - imgWidth / 2;
+      var img_x = centralPoint[0] - imgWidth / 2;
       var img_y = height / 2 - imgWidth / 2;
       svg
         .append("g")
@@ -125,51 +126,11 @@ export default {
         .style("width", `${imgWidth}px`)
         .style("height", `${imgWidth}px`);
 
-      // RADIAL LINES
-      var lineGroup = svg.append("g").attr("id", "lineGroup");
-
-      lineGroup
-        .selectAll("my_line")
-        .data(d)
-        .enter()
-        .append("line")
-        .attr("x1", function (d) {
-          return (
-            width / 2 +
-            y(d.birth_time == null ? d.experience_start : d.birth_time) *
-              Math.cos(x(d.name) - Math.PI * 0.5)
-          );
-        })
-        .attr("x2", function (d) {
-          return (
-            width / 2 +
-            y(d.death_time == 9999 ? 2022 : d.death_time) *
-              Math.cos(x(d.name) - Math.PI * 0.5)
-          );
-        })
-        .attr("y1", function (d) {
-          return (
-            height / 2 +
-            y(d.birth_time == null ? d.experience_start : d.birth_time) *
-              Math.sin(x(d.name) - Math.PI * 0.5)
-          );
-        })
-        .attr("y2", function (d) {
-          return (
-            height / 2 +
-            y(d.death_time == 9999 ? 2022 : d.death_time) *
-              Math.sin(x(d.name) - Math.PI * 0.5)
-          );
-        })
-        .attr("stroke", (d) => c[d.figure_type_id])
-        .attr("opacity", 0.5)
-        .attr("stroke-width", "1.5px");
-
       // RADIAL BARS
       var barsGroup = svg
         .append("g")
         .attr("id", "barsGroup")
-        .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
+        .attr("transform", "translate(" + centralPoint[0] + "," + height / 2 + ")");
 
       var pie = d3
         .pie()
@@ -285,15 +246,17 @@ export default {
                   .transition()
                   .duration(duration - 100)
                   .style("font-weight", "bold")
-                  .style("font-size", "12px");
+                  .style("font-size", "15px");
 
+                //PROFILE
                 var profile = d3
                   .select("#main_svg")
                   .append("svg")
                   .attr("id", "profile")
                   .append("g");
-                var r = [400, 300];
-                var detailspos = [width / 2 + r[0], height / 2 + r[1]];
+
+                var r = [300, 150];
+                var detailspos = [width / 2 - r[0], height / 2 + r[1]];
 
                 profile
                   .append("text")
@@ -302,7 +265,7 @@ export default {
                   .attr("x", detailspos[0])
                   .attr("y", detailspos[1])
                   .text(value.data.name)
-                  .style("font-family", "Times New Roman, 楷体")
+                  .style("font-family", "Times New Roman, 秋鸿楷, 楷体")
                   .style("font-size", "30px")
                   .style("fill", "black")
                   .style("text-anchor", "middle");
@@ -318,7 +281,7 @@ export default {
                   .attr("x", detailspos[0])
                   .attr("y", detailspos[1] + 30)
                   .text(alias)
-                  .style("font-family", "Times New Roman, 楷体")
+                  .style("font-family", "Times New Roman, 秋鸿楷, 楷体")
                   .style("font-size", "20px")
                   .style("fill", "#6D776E")
                   .style("text-anchor", "middle");
@@ -334,7 +297,7 @@ export default {
                   .attr("x", detailspos[0])
                   .attr("y", detailspos[1] + 60)
                   .text(label)
-                  .style("font-family", "Times New Roman, 楷体")
+                  .style("font-family", "Times New Roman, 秋鸿楷, 楷体")
                   .style("font-size", "20px")
                   .style("fill", "black")
                   .style("text-anchor", "middle");
@@ -363,8 +326,10 @@ export default {
                   )
                   .attr("width", recSize[0])
                   .attr("height", recSize[1])
-                  .attr("fill", "#E8DBB7")
-                  .attr("opacity", 0.5);
+                  // .attr("fill", "#E8DBB7")
+                  .attr("fill","#CED7D2")
+                  .attr("opacity", 0.8)
+                  .lower()//相反 raise()
 
                 profile
                   .append("image") //https://blog.csdn.net/weixin_44331765/article/details/112391810
@@ -386,7 +351,7 @@ export default {
                   .transition()
                   .duration(duration)
                   .style("font-weight", "normal")
-                  .style("font-size", "10px");
+                  .style("font-size", "13px");
               })
               .on("click", (event, v) => {
                 console.log(v.data.name);
@@ -407,12 +372,51 @@ export default {
         .attr("fill", (d) => c[d.index + 1])
         .attr("opacity", 0.1)
         .attr("stroke", "white");
+      // RADIAL LINES
+      var lineGroup = svg.append("g").attr("id", "lineGroup");
+
+      lineGroup
+        .selectAll("my_line")
+        .data(d)
+        .enter()
+        .append("line")
+        .attr("x1", function (d) {
+          return (
+            centralPoint[0] +
+            y(d.birth_time == null ? d.experience_start : d.birth_time) *
+              Math.cos(x(d.name) - Math.PI * 0.5)
+          );
+        })
+        .attr("x2", function (d) {
+          return (
+            centralPoint[0] +
+            y(d.death_time == 9999 ? 2022 : d.death_time) *
+              Math.cos(x(d.name) - Math.PI * 0.5)
+          );
+        })
+        .attr("y1", function (d) {
+          return (
+            height / 2 +
+            y(d.birth_time == null ? d.experience_start : d.birth_time) *
+              Math.sin(x(d.name) - Math.PI * 0.5)
+          );
+        })
+        .attr("y2", function (d) {
+          return (
+            height / 2 +
+            y(d.death_time == 9999 ? 2022 : d.death_time) *
+              Math.sin(x(d.name) - Math.PI * 0.5)
+          );
+        })
+        .attr("stroke", (d) => c[d.figure_type_id])
+        .attr("opacity", 0.5)
+        .attr("stroke-width", "1.5px");
 
       // PEOPLE'S INFO
       var infoGroup = svg
         .append("g")
         .attr("id", "info")
-        .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
+        .attr("transform", "translate(" + centralPoint[0] + "," + height / 2 + ")");
 
       infoGroup
         .selectAll("g")
@@ -444,8 +448,8 @@ export default {
             })
             .attr("y", 0)
             .text((datum) => datum.name)
-            .style("font-size", "12px")
-            .style("font-family", "楷体")
+            .style("font-size", "13px")
+            .style("font-family", "秋鸿楷, 秋鸿楷, 楷体")
             .style("font-weight", "normal")
             .style("dominant-baseline", "middle")
             // Rotation to improve readability
@@ -464,7 +468,7 @@ export default {
         .selectAll("circle")
         .data(decades)
         .join("circle")
-        .attr("cx", width / 2)
+        .attr("cx", centralPoint[0])
         .attr("cy", height / 2)
         .attr("r", (d) => y(d))
         .style("fill", "none")
@@ -476,7 +480,7 @@ export default {
         .selectAll("text")
         .data(decades)
         .join("text")
-        .attr("x", (d) => width / 2 + y(d) + 2)
+        .attr("x", (d) => centralPoint[0] + y(d) + 2)
         .attr("y", (d) => height / 2)
         .text((d) => d)
         .style("fill", "#6D776E")
@@ -485,8 +489,8 @@ export default {
         .style("pointer-events", "none");
 
       //LEGEND
-      var legendPos = [30, 670];
-      var interval = [60, 90]; // 横向距 纵向距
+      var legendPos = [240, 750];
+      var interval = [50, 3]; // 横向距 纵向距
       var iconSize = [50, 50];
       var legend = svg
         .append("g")
@@ -563,14 +567,15 @@ export default {
                   .transition()
                   .duration(duration - 100)
                   .style("font-weight", "bold")
-                  .style("font-size", "12px");
+                  .style("font-size", "15px");
 
                 var profile = d3
                   .select("#main_svg")
                   .append("svg")
                   .attr("id", "profile")
                   .append("g");
-                var r = [400, 300];
+
+                var r = [300, 150];
                 var detailspos = [width / 2 + r[0], height / 2 + r[1]];
 
                 profile
@@ -580,7 +585,7 @@ export default {
                   .attr("x", detailspos[0])
                   .attr("y", detailspos[1])
                   .text(value.data.name)
-                  .style("font-family", "Times New Roman, 楷体")
+                  .style("font-family", "Times New Roman, 秋鸿楷, 楷体")
                   .style("font-size", "30px")
                   .style("fill", "black")
                   .style("text-anchor", "middle");
@@ -596,7 +601,7 @@ export default {
                   .attr("x", detailspos[0])
                   .attr("y", detailspos[1] + 30)
                   .text(alias)
-                  .style("font-family", "Times New Roman, 楷体")
+                  .style("font-family", "Times New Roman, 秋鸿楷, 楷体")
                   .style("font-size", "20px")
                   .style("fill", "#6D776E")
                   .style("text-anchor", "middle");
@@ -612,7 +617,7 @@ export default {
                   .attr("x", detailspos[0])
                   .attr("y", detailspos[1] + 60)
                   .text(label)
-                  .style("font-family", "Times New Roman, 楷体")
+                  .style("font-family", "Times New Roman, 秋鸿楷, 楷体")
                   .style("font-size", "20px")
                   .style("fill", "black")
                   .style("text-anchor", "middle");
@@ -642,7 +647,8 @@ export default {
                   .attr("width", recSize[0])
                   .attr("height", recSize[1])
                   .attr("fill", "#E8DBB7")
-                  .attr("opacity", 0.5);
+                  .attr("opacity", 0.8)
+                  .lower()
 
                 profile
                   .append("image") //https://blog.csdn.net/weixin_44331765/article/details/112391810
@@ -664,7 +670,7 @@ export default {
                   .transition()
                   .duration(duration)
                   .style("font-weight", "normal")
-                  .style("font-size", "10px");
+                  .style("font-size", "13px");
               })
               .on("click", (event, v) => {
                 this.$router.push({
@@ -681,25 +687,16 @@ export default {
       var x2 = function (i) {
         return legendPos[0] + interval[0] * (i - 1);
       };
-      var y2 = legendPos[1] + interval[1];
+      var y2 = legendPos[1];
+      var y1 = legendPos[1] + interval[1];
       var x1 = function (i) {
         return legendPos[0] + interval[0] * (i - 1) - iconSize[0] / 2;
       };
-      var y1 = legendPos[1];
 
       legend.each(function (d) {
         const el = d3.select(this);
         console.log(d.type);
         // .attr("transform", "translate(" + legendPos[0] + interval * i + "," + legendPos[1] + ")")
-        el.append("text")
-          .text(d.type)
-          // .text("text")
-          .attr("x", (d) => x2(d.figure_type_id))
-          .attr("y", y2)
-          .style("text-anchor", "middle")
-          .style("font-family", "楷体")
-          .style("font-size", "20px")
-          .style("writing-mode", "vertical-lr");
         el.append("image")
           .attr("id", "imgLegend-" + d.figure_type_id)
           .attr("href", "cloud/" + d.figure_type_id + "-cloud-03.png") //图片放在public下就可以 https://blog.csdn.net/qq_30306717/article/details/121129193
@@ -710,38 +707,48 @@ export default {
           .attr("width", iconSize[0])
           .attr("height", iconSize[1]);
 
-        //TIME SELECTOR
-        var timeselectorPos = [1500, 50];
-        var timescale = [1830, 2030];
-        var timeselector = svg
-          .append("g")
-          .attr("id", "timeselector")
-          .attr(
-            "transform",
-            "translate(" + timeselectorPos[0] + "," + timeselectorPos[1] + ")"
-          );
-        // Add X axis
-        var timescaler = d3
-          .scaleLinear()
-          .domain(timescale)
-          .range([0, height - 100]);
-        svg
-          .append("g")
-          .attr(
-            "transform",
-            "translate(" + timeselectorPos[0] + "," + timeselectorPos[1] + ")"
-          )
-          .call(d3.axisRight(timescaler));
+        el.append("text")
+          .text(d.type)
+          // .text("text")
+          .attr("x", (d) => x2(d.figure_type_id))
+          .attr("y", y2)
+          .style("text-anchor", "end")
+          .style("font-family", "秋鸿楷, 楷体")
+          .style("font-size", "18px")
+          .style("writing-mode", "vertical-lr");
+
+        // //TIME SELECTOR
+        // var timeselectorPos = [1500, 50];
+        // var timescale = [1830, 2030];
+        // var timeselector = svg
+        //   .append("g")
+        //   .attr("id", "timeselector")
+        //   .attr(
+        //     "transform",
+        //     "translate(" + timeselectorPos[0] + "," + timeselectorPos[1] + ")"
+        //   );
+        // // Add X axis
+        // var timescaler = d3
+        //   .scaleLinear()
+        //   .domain(timescale)
+        //   .range([0, height - 100]);
+        // svg
+        //   .append("g")
+        //   .attr(
+        //     "transform",
+        //     "translate(" + timeselectorPos[0] + "," + timeselectorPos[1] + ")"
+        //   )
+        //   .call(d3.axisRight(timescaler));
 
         //TIPS
-        var tipPos = [1200, height];
+        var tipPos = [1350, height];
         var tips = svg
           .append("g")
           .attr("id", "tips")
           .attr("transform", "translate(" + tipPos[0] + "," + tipPos[1] + ")")
           .append("text")
           .text("注：1.何民魂出生年份不详，以其主要经历起始年份暂代。")
-          .style("font-family", "楷体")
+          .style("font-family", "秋鸿楷, 楷体")
           .style("font-size", "12px")
           .style("fill", "#6D776E")
           .style("opacity", 0.8)
@@ -785,7 +792,7 @@ button {
 }
 
 #my_chart {
-  background: url(../assets/background-00.png) center center no-repeat;
+  background: url(../assets/background-1.png) center center no-repeat;
   background-size: 100% 100%;
 }
 </style>
