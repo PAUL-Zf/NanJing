@@ -40,8 +40,8 @@ export default {
     var projection = d3
       .geoMercator()
       .center([108, 31]) // GPS of location to zoom on
-      .scale(500) // This is like the zoom
-      .translate([340, 470]);
+      .scale(440) // This is like the zoom
+      .translate([310, 450]);
 
     // // add circle border
     // svg
@@ -175,12 +175,12 @@ export default {
         let nameSvg = d3.select("#nameTitle");
         nameSvg
           .append("text")
-          .attr("x", 252)
-          .attr("y", 355)
+          .attr("x", 223)
+          .attr("y", 340)
           .text(this.name)
           .style("font-family", "Times New Roman, 秋鸿楷, 楷体")
           .style("font-size", "55px")
-          .style("letter-spacing", "12px")
+          .style("letter-spacing", "8px")
           // .style("font-weight", "bold")
           .style("fill", "#6D776E")
           .style("text-anchor", "end")
@@ -191,8 +191,8 @@ export default {
         let endTime = this.info[this.info.length - 1]["time"];
         nameSvg
           .append("text")
-          .attr("x", 210)
-          .attr("y", 427)
+          .attr("x", 185)
+          .attr("y", 405)
           .text(startTime)
           .style("font-family", "Times New Roman, 秋鸿楷, 楷体")
           .style("font-size", "10px")
@@ -204,8 +204,8 @@ export default {
 
         nameSvg
           .append("text")
-          .attr("x", 527)
-          .attr("y", 428)
+          .attr("x", 466)
+          .attr("y", 406)
           .text(endTime)
           .style("font-family", "Times New Roman, 秋鸿楷, 楷体")
           .style("font-size", "10px")
