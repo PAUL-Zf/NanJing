@@ -7,7 +7,11 @@
       <div id="name">
         <svg id="nameTitle"></svg>
       </div>
-      <div id="events"></div>
+      <div id="events">
+        <div id="border">
+          <div id="event"></div>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -111,6 +115,7 @@ export default {
             Number(event["location"][1]),
           ];
           let locationName = event["name"];
+          let ex = event["content"];
 
           let proLocation = projection(location);
           svg
@@ -134,6 +139,11 @@ export default {
             .on("mouseout", function () {
               d3.select("#event" + i).attr("r", 4);
               return tooltip2.style("opacity", 0.0);
+            })
+            .on("click", function () {
+              d3.select("#event")
+                .html('<p id="text">' + ex + "</p>")
+                .style("font-size", "14px");
             });
 
           if (i < this.info.length - 1) {
@@ -161,33 +171,99 @@ export default {
         let nameSvg = d3.select("#nameTitle");
         nameSvg
           .append("text")
-          .attr("x", 255)
-          .attr("y", 350)
+          .attr("x", 252)
+          .attr("y", 355)
           .text(this.name)
-          .style("font-family", "楷体")
-          .style("font-size", "60px")
-          .style("letter-spacing", "13px")
-          .style("font-weight", "bold")
+          .style("font-family", "Times New Roman, 秋鸿楷, 楷体")
+          .style("font-size", "55px")
+          .style("letter-spacing", "12px")
+          // .style("font-weight", "bold")
           .style("fill", "#6D776E")
           .style("text-anchor", "end")
           .style("writing-mode", "vertical-lr");
 
         // Add time text
-        console.log(this.info[0]);
-        let startTime = this.info[0]["content"];
-        let endTime = this.info[-1]["time"];
+        let startTime = this.info[0]["time"];
+        let endTime = this.info[this.info.length - 1]["time"];
         nameSvg
           .append("text")
-          .attr("x", 100)
-          .attr("y", 300)
+          .attr("x", 210)
+          .attr("y", 427)
           .text(startTime)
-          .style("font-family", "楷体")
-          .style("font-size", "120px")
-          .style("letter-spacing", "150px")
+          .style("font-family", "Times New Roman, 秋鸿楷, 楷体")
+          .style("font-size", "10px")
+          .style("letter-spacing", "2px")
           .style("font-weight", "bold")
-          .style("fill", "#6D776E")
-          // .style("text-anchor", "middle")
-          .style("writing-mode", "vertical-lr");
+          .style("fill", "white");
+        // .style("text-anchor", "middle")
+        // .style("writing-mode", "vertical-lr");
+
+        nameSvg
+          .append("text")
+          .attr("x", 527)
+          .attr("y", 428)
+          .text(endTime)
+          .style("font-family", "Times New Roman, 秋鸿楷, 楷体")
+          .style("font-size", "10px")
+          .style("letter-spacing", "2px")
+          .style("font-weight", "bold")
+          .style("fill", "white");
+
+        // Add events text
+        const eventsSvg = d3
+          .select("#event")
+          .append("svg")
+          .attr("width", 300 * this.info.length)
+          .attr("height", 363);
+
+        // for (let i = 0; i < this.info.length; i++) {
+        //   let ex = this.info[i]["content"];
+        //   let text = eventsSvg
+        //     .append("text")
+        //     .attr("class", "origin")
+        //     .attr("x", i * 180 + 150)
+        //     .attr("y", 10)
+        //     .style("font-family", "Times New Roman, 秋鸿楷, 楷体")
+        //     .style("font-size", "14px")
+        //     .style("letter-spacing", "3px")
+        //     // .style("font-weight", "bold")
+        //     .style("fill", "#6D776E")
+        //     .style("text-anchor", "start")
+        //     .style("writing-mode", "vertical-lr");
+
+        //   let strs = [];
+        //   for (let j = 0; j < ex.length / 6; j++) {
+        //     strs.push(ex.substr(6 * j, 6 * j + 6));
+        //   }
+        //   console.log(strs);
+        //   text
+        //     .selectAll("tspan")
+        //     .data(strs)
+        //     .join("tspan")
+        //     .attr("class", "divide")
+        //     .attr("y", text.attr("y")) //文本从x=?处开始
+        //     .attr("dx", "-25px") //文本较y轴的相对位移，此处也就意味着换行
+        //     .text(function (d) {
+        //       return d;
+        //     });
+
+        //   // d3.selectAll(".origin").remove();
+        // }
+
+        // eventsSvg
+        //   .selectAll("events")
+        //   .data(eventsData)
+        //   .join("text")
+        //   .attr("x", (d, i) => i * 90 + 30)
+        //   .attr("y", 10)
+        //   .text((d) => d)
+        //   .style("font-family", "Times New Roman, 秋鸿楷, 楷体")
+        //   .style("font-size", "20px")
+        //   .style("letter-spacing", "3px")
+        //   // .style("font-weight", "bold")
+        //   .style("fill", "#6D776E")
+        //   .style("text-anchor", "start")
+        //   .style("writing-mode", "vertical-lr");
       });
     },
   },
@@ -243,6 +319,32 @@ export default {
   height: 50%;
 }
 
+#border {
+  position: relative;
+  float: left;
+  /* background-color: green; */
+  left: 20%;
+  width: 65%;
+  height: 80%;
+  overflow-x: hidden;
+  overflow: hidden;
+}
+
+#event {
+  position: relative;
+  float: left;
+  width: 100%;
+  height: 98%;
+  overflow-x: auto;
+  overflow: hidden;
+  font-family: "Times New Roman, 秋鸿楷, 楷体";
+  font-size: "14px";
+}
+
+#text {
+  font-size: 20px;
+}
+
 .tooltip {
   position: absolute;
   width: 80;
@@ -262,3 +364,11 @@ export default {
   background-size: 100% 105%;
 }
 </style>
+
+<!-- .style("font-family", "Times New Roman, 秋鸿楷, 楷体")
+        //     .style("font-size", "14px")
+        //     .style("letter-spacing", "3px")
+        //     // .style("font-weight", "bold")
+        //     .style("fill", "#6D776E")
+        //     .style("text-anchor", "start")
+        //     .style("writing-mode", "vertical-lr"); -->
