@@ -161,7 +161,7 @@ export default {
             })
             .on("click", function () {
               d3.select("#event")
-                .html("<p>" + i + "." + exTime + "年 " + ex + "</p>")
+                .html("<p>" + i + "." + exTime + "年" + "</br>" + ex + "</p>")
                 .style("opacity", 1.0);
             });
 
