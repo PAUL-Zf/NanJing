@@ -160,8 +160,9 @@ export default {
               return tooltip2.style("opacity", 0.0);
             })
             .on("click", function () {
+              var index = i + 1
               d3.select("#event")
-                .html("<p>" + i + "." + exTime + "年" + "</br>" + ex + "</p>")
+                .html("<p>" + index + "." + exTime + "年" + "</br>" + ex + "</p>")
                 .style("opacity", 1.0);
             });
 
