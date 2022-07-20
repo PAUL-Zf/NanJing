@@ -249,7 +249,7 @@ export default {
                   .transition()
                   .duration(duration - 100)
                   .style("font-weight", "bold")
-                  .style("font-size", "15px");
+                  .style("font-size", "12px");
 
                 //PROFILE
                 var profile = d3
@@ -354,7 +354,7 @@ export default {
                   .transition()
                   .duration(duration)
                   .style("font-weight", "normal")
-                  .style("font-size", "13px");
+                  .style("font-size", "8px");
               })
               .on("click", (event, v) => {
                 // console.log(v.data.name);
@@ -454,8 +454,8 @@ export default {
             })
             .attr("y", 0)
             .text((datum) => datum.name)
-            .style("font-size", "13px")
-            .style("font-family", "秋鸿楷, 楷体")
+            .style("font-size", "8px")
+            // .style("font-family", "OPPOSans-L, 宋体")
             .style("font-weight", "normal")
             .style("dominant-baseline", "middle")
             // Rotation to improve readability
@@ -573,7 +573,7 @@ export default {
                   .transition()
                   .duration(duration - 100)
                   .style("font-weight", "bold")
-                  .style("font-size", "15px");
+                  .style("font-size", "12px");
 
                 var profile = d3
                   .select("#main_svg")
@@ -677,7 +677,7 @@ export default {
                   .transition()
                   .duration(duration)
                   .style("font-weight", "normal")
-                  .style("font-size", "13px");
+                  .style("font-size", "8px");
               })
               .on("click", (event, v) => {
                 this.$router.push({
