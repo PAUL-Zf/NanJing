@@ -11,3 +11,31 @@
   font-weight: normal;
   font-style: normal;
 }
+
+@font-face {
+  font-family: "方正楷体简体";
+  src: url('方正楷体简体.ttf');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "思源黑体CN-Bold";
+  src: url('SourceHanSansCN-Bold_0.otf');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "思源黑体CN-Medium";
+  src: url('SourceHanSansCN-Medium_0.otf');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "思源黑体CN-Normal";
+  src: url('SourceHanSansCN-Normal_0.otf');
+  font-weight: normal;
+  font-style: normal;
+}
