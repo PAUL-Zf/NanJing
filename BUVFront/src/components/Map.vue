@@ -1,6 +1,5 @@
 <template>
   <div id="info" height="100%">
-    <div id="button" @click="goback"></div>
     <div id="map">
       <svg id="myMap"></svg>
     </div>
@@ -11,6 +10,7 @@
       <div id="events">
         <div id="border"></div>
       </div>
+      <div id="button" @click="goback"></div>
     </div>
   </div>
 </template>
@@ -38,8 +38,8 @@ export default {
     var projection = d3
       .geoMercator()
       .center([108, 31]) // GPS of location to zoom on
-      .scale(440) // This is like the zoom
-      .translate([310, 450]);
+      .scale(560) // This is like the zoom
+      .translate([400, 480]);
 
     // // add circle border
     // svg
@@ -99,17 +99,36 @@ export default {
         let eventText = d3
           .select("#border")
           .append("div")
+          .attr("id", "eventTime")
+          .style("position", "relative")
+          // .style("background-color", "#D3D9D8")
+          // .style("border", "solid")
+          .style("width", "500px")
+          .style("top", "30px")
+          .style("left", "25px")
+          .style("opacity", 1)
+          .style("color", "black")
+          .style("font-weight", "bold ")
+          .style("font-size", "24px")
+          .style("text-align", "left")
+          .style("font-family", "思源黑体, 黑体, 楷体")
+          .html("<p>" + this.info[0]["time"] + "年" + "</br>" + "</p>");
+
+        let eventText2 = d3
+          .select("#border")
+          .append("div")
           .attr("id", "event")
           .style("position", "absolute")
-          .style("background-color", "#D3D9D8")
-          .style("border", "solid")
-          .style("border-width", "1px")
-          .style("border-radius", "5px")
-          .style("padding", "10px")
-          .style("opacity", 0)
-          .style("font-size", "30px")
+          // .style("background-color", "#D3D9D8")
+          // .style("border", "solid")
+          .style("width", "468px")
+          .style("top", "80px")
+          .style("left", "25px")
+          .style("opacity", 1)
+          .style("font-size", "18px")
           .style("text-align", "left")
-          .style("font-family", "秋鸿楷, 楷体");
+          .style("font-family", "思源黑体, 黑体, 楷体")
+          .html("<p>" + this.info[0]["content"] + "</p>");
 
         let tooltip2 = d3
           .select("#map")
@@ -151,7 +170,7 @@ export default {
               d3.select("#event" + i).attr("r", 6);
               return tooltip2
                 .style("top", d.pageY + "px")
-                .style("left", d.pageX - 400 + "px")
+                .style("left", d.pageX - 300 + "px")
                 .style("opacity", 1)
                 .html("<p>" + locationName + "</p>");
             })
@@ -160,10 +179,14 @@ export default {
               return tooltip2.style("opacity", 0.0);
             })
             .on("click", function () {
-              var index = i + 1
+              var index = i + 1;
+              d3.select("#eventTime")
+                // .html("<p>" + index + "." + exTime + "年" + "</br>" + ex + "</p>")
+                .html("<p>" + exTime + "年" + "</p>")
+                .style("opacity", 1.0);
               d3.select("#event")
                 // .html("<p>" + index + "." + exTime + "年" + "</br>" + ex + "</p>")
-                .html("<p>" + exTime + "年" + "</br>" + ex + "</p>")
+                .html("<p>" + event["content"] + "</p>")
                 .style("opacity", 1.0);
             });
 
@@ -192,10 +215,11 @@ export default {
         let nameSvg = d3.select("#nameTitle");
         nameSvg
           .append("text")
-          .attr("x", 223)
-          .attr("y", 340)
+          .attr("x", 78)
+          .attr("y", 345)
           .text(this.name)
           .style("font-family", "Times New Roman, 秋鸿楷, 楷体")
+          .style("color", "black")
           .style("font-size", "55px")
           .style("letter-spacing", "8px")
           // .style("font-weight", "bold")
@@ -208,8 +232,8 @@ export default {
         let endTime = this.info[this.info.length - 1]["time"];
         nameSvg
           .append("text")
-          .attr("x", 185)
-          .attr("y", 405)
+          .attr("x", 44)
+          .attr("y", 415)
           .text(startTime)
           .style("font-family", "Times New Roman, 秋鸿楷, 楷体")
           .style("font-size", "10px")
@@ -221,8 +245,8 @@ export default {
 
         nameSvg
           .append("text")
-          .attr("x", 466)
-          .attr("y", 406)
+          .attr("x", 423)
+          .attr("y", 415)
           .text(endTime)
           .style("font-family", "Times New Roman, 秋鸿楷, 楷体")
           .style("font-size", "10px")
@@ -301,10 +325,10 @@ export default {
 
 #button {
   position: absolute;
-  top: 87%;
-  left: 10%;
-  width: 80px;
-  height: 80px;
+  top: 3%;
+  left: 86%;
+  width: 60px;
+  height: 60px;
   background: url(../assets/back.png) center center no-repeat;
   background-size: 100% 105%;
 }
@@ -312,8 +336,8 @@ export default {
 #map {
   position: relative;
   float: left;
-  left: 22%;
-  width: 35%;
+  left: 15%;
+  width: 40%;
   height: 100%;
 }
 
@@ -327,7 +351,7 @@ export default {
   position: relative;
   float: left;
   left: 25%;
-  width: 40%;
+  width: 30%;
   height: 100%;
 }
 
@@ -354,19 +378,30 @@ export default {
   position: relative;
   float: left;
   /* background-color: green; */
-  left: 20%;
-  width: 65%;
+  /* left: 20%; */
+  width: 100%;
   height: 80%;
   overflow-x: hidden;
   overflow: hidden;
 }
 
-#event {
-  position: relative;
+#eventTime {
+  position: absolute;
   float: left;
   width: 100%;
   height: 98%;
-  font-family: "Times New Roman, 秋鸿楷, 楷体";
+  left: 10%;
+  top: 10%;
+  font-family: "思源黑体, 黑体, 楷体";
+  font-size: "20px";
+}
+
+#event {
+  position: absolute;
+  float: left;
+  width: 100%;
+  height: 98%;
+  font-family: "思源黑体, 黑体, 楷体";
   font-size: "20px";
 }
 
@@ -389,7 +424,7 @@ export default {
 } */
 
 #info {
-  background: url(../assets/background_2.png) center center no-repeat;
+  background: url(../assets/background.png) center center no-repeat;
   background-size: 100% 105%;
 }
 </style>

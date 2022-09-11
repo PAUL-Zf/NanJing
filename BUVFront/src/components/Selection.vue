@@ -188,10 +188,13 @@ export default {
           this.pieClick(v.index);
           d3.select("#barsGroup").selectAll(".selected").remove();
           d3.select("#barsGroup").selectAll(".selectedgroup").remove();
-
+          d3.select("#legend").selectAll("text").style("font-weight","normal")
           if (this.selectedPie != undefined) {
             var data = this.getPeopleOfType(d, this.selectedPie);
-
+            var figure_type_id = v.index + 1
+            d3.select("#textLegend-" + figure_type_id)
+            .style("font-weight", "bold")
+            
             var groups = d3
               .select("#barsGroup")
               .append("g")
@@ -517,8 +520,12 @@ export default {
           this.pieClick(v.figure_type_id - 1);
           d3.select("#barsGroup").selectAll(".selected").remove();
           d3.select("#barsGroup").selectAll(".selectedgroup").remove();
+          d3.select("#legend").selectAll("text").style("font-weight","normal")
           if (this.selectedPie != undefined) {
             var data = this.getPeopleOfType(d, this.selectedPie);
+
+            d3.select("#textLegend-" + v.figure_type_id)
+            .style("font-weight", "bold")
 
             var groups = d3
               .select("#barsGroup")
@@ -704,6 +711,7 @@ export default {
           .attr("height", iconSize[1]);
 
         el.append("text")
+          .attr("id", "textLegend-" + d.figure_type_id)
           .text(d.type)
           // .text("text")
           .attr("x", (d) => x2(d.figure_type_id))
